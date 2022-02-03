@@ -15,7 +15,6 @@
 {% macro default__create_table_like(temporary, source, relation) -%}
   {%- set sql_header = config.get('sql_header', none) -%}
   {%- set add_columns = config.get('add_columns', none) -%}
-  
   {{ sql_header if sql_header is not none }}
   
   create {% if temporary: -%}temporary{%- endif %} table
@@ -28,7 +27,7 @@
     {% for col in add_columns %}
       alter table 
         {{ relation.include(database=(not temporary), schema=(not temporary)) }} add column
-        {{ col["name"] }} {% col["type"] if col["type"] %} {% col["default"] if col["default"] %} {%col["xtra_attrb"] if col["xtra_attrb"] %}
+        {{ col["name"] }} {%if col["type"] %}col["type"]{%- endif %} {% if col["default"] %} {% col["default"] {% endif %}{% if col["xtra_attrb"] %} col["xtra_attrb"] {% endif %}
         ;
     {% endfor %}
   {% endif %}  

@@ -65,6 +65,14 @@
     {% if not dest_columns %}
       {% set dest_columns = adapter.get_columns_in_relation(existing_relation) %}
     {% endif %}
+    {%- set add_columns = config.get('add_columns', none) -%}
+    {% set add_cols = [] %}
+    {% for column in add_columns %}
+      {% do add_cols.append(column['name'])  %}
+    {% endfor %}
+    {% for column in add_cols %}
+      {% if column in dest_columns %} {% do dest_columns.remove(column) %} {% endif %}
+    {% endfor %}
     {% set build_sql = dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
   
   {% endif %}

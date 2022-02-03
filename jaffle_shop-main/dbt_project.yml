@@ -19,7 +19,7 @@ clean-targets:
 
 models:
   jaffle_shop:
-    # add_columns = "{"name":"name","type":"type","default":"default","xtra_attrb":"e.g. Identity definition"}"
+    # add_columns = [{"name":"name","type":"type","default":"default","xtra_attrb":"e.g. Identity definition"}]
       materialized: table
       staging:
         materialized: view
