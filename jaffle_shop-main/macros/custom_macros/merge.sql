@@ -45,7 +45,15 @@
         on {{ predicates | join(' and ') }}
 
     {% if unique_key %}
-    when matched then update set
+    when matched and
+    (
+         {% for column_name in update_columns -%}
+             DBT_INTERNAL_DEST.{{ column_name }} <> DBT_INTERNAL_SOURCE.{{ column_name }}
+            {% if not loop.last %} OR  {% endif %}
+        {%- endfor %}
+    )
+    
+    then update set
         {% for column_name in update_columns -%}
             {{ column_name }} = DBT_INTERNAL_SOURCE.{{ column_name }}
             {%- if not loop.last %}, {%- endif %}
