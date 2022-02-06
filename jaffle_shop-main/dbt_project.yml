@@ -9,6 +9,9 @@ analysis-paths: ["analysis"]
 test-paths: ["tests"]
 data-paths: ["data"]
 macro-paths: ["macros"]
+dispatch:
+  - macro_namespace: dbt
+    search_order: ['jaffle_shop','dbt']
 
 target-path: "target"
 clean-targets:
@@ -19,7 +22,9 @@ clean-targets:
 
 models:
   jaffle_shop:
+      database: dbt_demo
+      schema: dbt
     # add_columns = [{"name":"name","type":"type","default":"default","xtra_attrb":"e.g. Identity definition"}]
-      materialized: table
+      materialized: incremental
       staging:
         materialized: view
