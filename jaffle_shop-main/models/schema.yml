@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: customers
+    config:
+      add_columns: [{"name":"id","type":"int","xtra_attrb":"identity(1,1)"}]
+      unique_key: customer_id
+      on_schema_change: append_new_columns
+      incremental_strategy: merge
     description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
 
     columns:
@@ -31,7 +36,11 @@ models:
 
   - name: orders
     description: This table has basic information about orders, as well as some derived facts based on payments
-
+    config:
+      add_columns: [{"name":"id","type":"int","xtra_attrb":"identity(1,1)"}]
+      unique_key: order_id
+      on_schema_change: append_new_columns
+      incremental_strategy: merge
     columns:
       - name: order_id
         tests:

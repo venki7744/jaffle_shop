@@ -1,0 +1,15 @@
+version: 2
+
+seeds:
+  - name: raw_customers
+    config:
+      database: raw_data
+      schema: raw
+  - name: raw_orders
+    config:
+      database: raw_data
+      schema: raw
+  - name: raw_payments
+    config:
+      database: raw_data
+      schema: raw

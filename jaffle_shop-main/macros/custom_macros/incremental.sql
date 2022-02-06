@@ -43,7 +43,7 @@
 
   {% if existing_relation is none %}
     {% do run_query(create_table_as(True, tmp_relation, sql)) %}
-    {% set build_sql = create_table_like(False, target_relation, tmp_relation)}
+    {% set build_sql = create_table_like(False, target_relation, tmp_relation) %}
   
   {% elif existing_relation.is_view %}
     {#-- Can't overwrite a view with a table - we must drop --#}
@@ -53,7 +53,7 @@
   
   {% elif full_refresh_mode %}
     {% do run_query(create_table_as(True, tmp_relation, sql)) %}
-    {% set build_sql = create_table_like(False, target_relation, tmp_relation)}
+    {% set build_sql = create_table_like(False, target_relation, tmp_relation) %}
   
   {% else %}
     {% do run_query(create_table_as(True, tmp_relation, sql)) %}
@@ -62,17 +62,11 @@
            to_relation=target_relation) %}
     {#-- Process schema changes. Returns dict of changes if successful. Use source columns for upserting/merging --#}
     {% set dest_columns = process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
-    {% if not dest_columns %}
-      {% set dest_columns = adapter.get_columns_in_relation(existing_relation) %}
-    {% endif %}
-    {%- set add_columns = config.get('add_columns', none) -%}
-    {% set add_cols = [] %}
-    {% for column in add_columns %}
-      {% do add_cols.append(column['name'])  %}
-    {% endfor %}
-    {% for column in add_cols %}
-      {% if column in dest_columns %} {% do dest_columns.remove(column) %} {% endif %}
-    {% endfor %}
+    {{ log("before call except block:"~dest_columns) }}
+    {#-- % if not dest_columns % --#}
+      {{ log("inside call except block:")}}
+      {% set dest_columns = adapter.get_columns_in_relation(tmp_relation) %}
+    {#-- % endif % --#}
     {% set build_sql = dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
   
   {% endif %}
