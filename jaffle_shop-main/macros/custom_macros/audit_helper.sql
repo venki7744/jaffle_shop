@@ -109,11 +109,6 @@
     {% endif %}
 {% endmacro %}
 
-{% macro to_clean_string(obj) %}
-    {% set clear_string = obj | string | replace('\\n',' ') | replace("'","\\'") | replace("\\\\","\\") | trim %}
-   {{ return(clear_string) }}
-{% endmacro %}
-
 {% macro log_job_step(method,  Result) -%}
   {{ adapter.dispatch('log_job_step')(method,  Result) }}
 {%- endmacro %}
