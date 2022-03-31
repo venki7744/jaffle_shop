@@ -3,3 +3,4 @@ target/
 dbt_modules/
 logs/
 **/.DS_Store
+macros/custom_macros/generate_model_sql.sql

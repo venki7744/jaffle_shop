@@ -1,0 +1,20 @@
+Table run_log_header {
+  run_id int PK
+  invoke_id varchar
+  user_id int
+  run_start datetime
+  run_end datetime
+  status varchar
+  run_metadata json
+}
+
+Table run_log_details {
+  run_id int
+  step_id varchar
+  version_id int
+  step_start datetime
+  step_end dateime
+  status varchar
+  step_metadata
+
+}

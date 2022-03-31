@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {% macro default__get_create_table_like_sql(temporary, target_relation, source) -%}
-  {{ return(create_table_as(temporary, source, relation)) }}
+  {{ return(create_table_like(temporary, target_relation, source)) }}
 {% endmacro %}
 
 
