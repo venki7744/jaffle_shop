@@ -4,8 +4,9 @@
 
 {% macro default__log_job_start() -%}
     {% set audit_db = config.get('audit_db') %}
-    {% set audit_schema = config.get('audit_schema') %}
-    
+    {% set audit_schema = generate_schema_name(config.get('audit_schema'),node) %}
+    {% set full_qualified_schema = audit_db + '.' + audit_schema | trim %}
+    {% do create_custom_schema(full_qualified_schema) %}
     {%set run_sql %}
         select * from {{audit_db}}.{{audit_schema}}.run_log_header 
         where run_id =  {{ var('restart_id', -1) }} 
@@ -46,7 +47,9 @@
 
 {% macro default__log_job_end(run_results) -%}
     {% set audit_db = config.get('audit_db') %}
-    {% set audit_schema = config.get('audit_schema') %}
+    {% set audit_schema = generate_schema_name(config.get('audit_schema'),node) %}
+    {% set full_qualified_schema = audit_db + '.' + audit_schema | trim %}
+    {% do create_custom_schema(full_qualified_schema) %}
     {%set run_sql %}
         select run_id from {{audit_db}}.{{audit_schema}}.run_log_header 
         where invoke_id = '{{ invocation_id }}'
@@ -115,7 +118,9 @@
 
 {% macro default__log_job_step(method, Result) -%}
     {% set audit_db = config.get('audit_db') %}
-    {% set audit_schema = config.get('audit_schema') %}
+    {% set audit_schema = generate_schema_name(config.get('audit_schema'),node) %}
+    {% set full_qualified_schema = audit_db + '.' + audit_schema | trim %}
+    {% do create_custom_schema(full_qualified_schema) %}
     {%set run_sql %}
         select run_id from {{audit_db}}.{{audit_schema}}.run_log_header 
         where invoke_id = '{{ invocation_id }}'

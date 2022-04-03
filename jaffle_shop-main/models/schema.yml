@@ -5,7 +5,9 @@ models:
     config:
       add_columns: [{"name":"id","type":"int","xtra_attrb":"identity(1,1)"}]
       unique_key: customer_id
+      cluster_by: ["customer_id"]
       on_schema_change: append_new_columns
+      materialized: table
       incremental_strategy: merge
     description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
 
@@ -39,6 +41,7 @@ models:
     config:
       add_columns: [{"name":"id","type":"int","xtra_attrb":"identity(1,1)"}]
       unique_key: order_id
+      cluster_by: ["order_id"]
       on_schema_change: append_new_columns
       incremental_strategy: merge
     columns:

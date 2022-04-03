@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: stg_customers
+    config:
+      cluster_by: ['customer_id']
     columns:
       - name: customer_id
         tests:
@@ -9,6 +11,8 @@ models:
           - not_null
 
   - name: stg_orders
+    config:
+      cluster_by: ['order_id']
     columns:
       - name: order_id
         tests:
@@ -20,6 +24,8 @@ models:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
 
   - name: stg_payments
+    config:
+      cluster_by: ['payment_id']
     columns:
       - name: payment_id
         tests:
